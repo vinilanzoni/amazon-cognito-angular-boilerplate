@@ -1,0 +1,30 @@
+<div class="alert alert-danger alert-dismissible" *ngFor="let message of dangerMessages; let i=index">
+  {{ message }}
+  <button type="button" class="btn-close" (click)="closeDanger(i)"></button>
+</div>
+<div class="alert alert-info alert-dismissible" *ngFor="let message of infoMessages; let i=index">
+  {{ message }}
+  <button type="button" class="btn-close" (click)="closeInfo(i)"></button>
+</div>
+<form [formGroup]="validateForm" (ngSubmit)="onSubmit()">
+<div class="my-3 row">
+  <label class="col-3 col-form-label">Email:</label>
+  <div class="col-9">
+    <input class="form-control" type="text" formControlName="email">
+  </div>
+</div>
+<div class="my-3 row">
+  <label class="col-3 col-form-label">Código recebido:</label>
+  <div class="col-9">
+    <div class="input-group">
+      <input type="text" class="form-control" formControlName="code">
+      <button class="btn btn-secondary" type="button" (click)="resendCode()">Reenviar</button>
+    </div>
+  </div>
+</div>
+<div class="mb-3 row">
+  <div class="col">
+    <button type="submit" class="btn btn-primary w-100">Enviar</button>
+  </div>
+</div>
+</form>

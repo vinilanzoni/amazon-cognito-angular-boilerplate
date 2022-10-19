@@ -1,0 +1,26 @@
+<div class="alert alert-danger alert-dismissible" *ngFor="let message of messages; let i=index">
+  {{ message }}
+  <button type="button" class="btn-close" (click)="close(i)"></button>
+</div>
+<form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+<div class="my-3 row">
+  <label class="col-3 col-form-label">Email:</label>
+  <div class="col-9">
+    <input type="email" class="form-control" formControlName="email">
+  </div>
+</div>
+<div class="mb-3 row">
+  <label class="col-3 col-form-label">Senha:</label>
+  <div class="col-9">
+    <input type="password" class="form-control" formControlName="password">
+  </div>
+</div>
+<div class="mb-3 row">
+  <div class="col">
+    <button type="submit" class="btn btn-primary w-100">Enviar</button>
+  </div>
+  <div class="col">
+    <button routerLink="../sign-up" class="btn btn-secondary w-100">Cadastrar</button>
+  </div>
+</div>
+</form>
