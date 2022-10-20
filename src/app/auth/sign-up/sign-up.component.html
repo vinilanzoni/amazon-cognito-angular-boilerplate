@@ -22,8 +22,21 @@
   </div>
 </div>
 <div class="mb-3 row">
+  <label class="col-3 col-form-label">Repita a senha:</label>
+  <div class="col-9">
+    <input type="password" class="form-control" formControlName="passwordRepeat">
+  </div>
+</div>
+<div class="mb-3 row">
   <div class="col">
-    <button type="submit" class="btn btn-primary w-100">Enviar</button>
+    <button type="submit" class="btn btn-primary w-100" [disabled]="!isFormValid()">Enviar</button>
   </div>
 </div>
 </form>
+<div class="mb-3 row">
+  <div class="col text-center">
+    <a [routerLink]="['auth/sign-in']" class="text-decoration-none fw-semibold">
+      <fa-icon [icon]="faChevronLeft" class="me-2"></fa-icon>Voltar
+    </a>
+  </div>
+</div>

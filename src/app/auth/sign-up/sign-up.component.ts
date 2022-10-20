@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { CognitoService } from '../../service/cognito.service';
 
 @Component({
@@ -14,9 +15,12 @@ export class SignUpComponent implements OnInit {
     name: new FormControl('', Validators.required),
     email: new FormControl('', [ Validators.required, Validators.email ]),
     password: new FormControl('', [ Validators.required, Validators.minLength(8) ]),
+    passwordRepeat: new FormControl('', [ Validators.required, Validators.minLength(8) ]),
   });
 
   messages: String[] = [];
+
+  faChevronLeft = faChevronLeft;
 
   constructor(
     private readonly cognitoService: CognitoService,
@@ -28,6 +32,10 @@ export class SignUpComponent implements OnInit {
 
   close(index: number) {
     this.messages.splice(index, 1);
+  }
+
+  isFormValid(): boolean {
+    return this.signUpForm.valid && this.signUpForm.get('password')!.value === this.signUpForm.get('passwordRepeat')!.value;
   }
 
   async onSubmit() {

@@ -5,15 +5,17 @@ import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { CognitoService } from '../../service/cognito.service';
 
 @Component({
-  selector: 'app-validate',
-  templateUrl: './validate.component.html',
-  styleUrls: ['./validate.component.scss']
+  selector: 'app-reset-password',
+  templateUrl: './reset-password.component.html',
+  styleUrls: ['./reset-password.component.scss']
 })
-export class ValidateComponent implements OnInit {
+export class ResetPasswordComponent implements OnInit {
 
-  validateForm = new FormGroup({
+  resetPasswordForm = new FormGroup({
     email: new FormControl({ value: '', disabled: true }, [ Validators.required, Validators.email ]),
-    code: new FormControl('', [ Validators.required ]),
+    code: new FormControl('', [Validators.required]),
+    password: new FormControl('', [ Validators.required, Validators.minLength(8) ]),
+    passwordRepeat: new FormControl('', [ Validators.required, Validators.minLength(8) ]),
   });
 
   dangerMessages: String[] = [];
@@ -30,8 +32,8 @@ export class ValidateComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(params => {
       let email = params['email'];
-      if(email) {
-        this.validateForm.get('email')!.setValue(email);
+      if (email) {
+        this.resetPasswordForm.get('email')!.setValue(email);
       }
     });
   }
@@ -44,10 +46,14 @@ export class ValidateComponent implements OnInit {
     this.infoMessages.splice(index, 1);
   }
 
+  isFormValid(): boolean {
+    return this.resetPasswordForm.valid && this.resetPasswordForm.get('password')!.value === this.resetPasswordForm.get('passwordRepeat')!.value;
+  }
+
   async resendCode() {
     try {
-      await this.cognitoService.resendCode(this.validateForm.get('email')!.value!);
-      this.infoMessages.push('Código de validação reenviado com sucesso.');
+      await this.cognitoService.forgotPassword(this.resetPasswordForm.get('email')!.value!);
+      this.infoMessages.push('Código reenviado com sucesso.');
     } catch (err: any) {
       this.dangerMessages.push(err.message);
     }
@@ -55,8 +61,8 @@ export class ValidateComponent implements OnInit {
 
   async onSubmit() {
     try {
-      await this.cognitoService.validate(this.validateForm.get('email')!.value!, this.validateForm.get('code')!.value!);
-      this.router.navigate(['auth']);
+      await this.cognitoService.confirmPassword(this.resetPasswordForm.get('email')!.value!, this.resetPasswordForm.get('code')!.value!, this.resetPasswordForm.get('password')!.value!);
+      this.router.navigate(['auth/sign-in']);
     } catch (err: any) {
       this.dangerMessages.push(err.message);
     }

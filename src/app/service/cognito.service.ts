@@ -16,6 +16,46 @@ export class CognitoService {
 
   constructor() { }
 
+  confirmPassword(email: string, code: string, password: string): Promise<any> {
+    let cognitoUser = new CognitoUser({
+      Username: email,
+      Pool: this.userPool,
+    });
+
+    return new Promise((resolve, reject) => {
+      cognitoUser.confirmPassword(code, password, {
+        onSuccess: function (result) {
+          console.log(result);
+          resolve(result);
+        },
+        onFailure: function (err) {
+          console.error(err);
+          reject(err);
+        },
+      });
+    });
+  }
+
+  forgotPassword(email: string): Promise<any> {
+    let cognitoUser = new CognitoUser({
+      Username: email,
+      Pool: this.userPool,
+    });
+
+    return new Promise((resolve, reject) => {
+      cognitoUser.forgotPassword({
+        onSuccess: function (data) {
+          console.log(data);
+          resolve(data);
+        },
+        onFailure: function (err) {
+          console.error(err);
+          reject(err);
+        },
+      });
+    });
+  }
+
   isLoggedIn(): boolean {
     let isSessionValid = false;
     let cognitoUser = this.userPool.getCurrentUser();
@@ -63,18 +103,18 @@ export class CognitoService {
     return new Promise((resolve, reject) => {
       cognitoUser.authenticateUser(authenticationDetails, {
         onSuccess: function (result) {
-          console.error(result);
+          console.log(result);
           resolve(result);
         },
         onFailure: function (err) {
-          console.log(err);
+          console.error(err);
           reject(err);
         },
       });
     });
   }
 
-  signOut() {
+  signOut(): void {
     let cognitoUser = this.userPool.getCurrentUser();
     if (cognitoUser) {
       cognitoUser.signOut();

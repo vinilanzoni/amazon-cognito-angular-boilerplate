@@ -17,7 +17,12 @@
 </div>
 <div class="mb-3 row">
   <div class="col">
-    <button type="submit" class="btn btn-primary w-100">Enviar</button>
+    <button type="submit" class="btn btn-primary w-100" [disabled]="!signInForm.valid">Enviar</button>
+  </div>
+</div>
+<div class="mb-3 row">
+  <div class="col">
+    <button routerLink="../forgot-password" class="btn btn-secondary w-100">Esqueceu a senha?</button>
   </div>
   <div class="col">
     <button routerLink="../sign-up" class="btn btn-secondary w-100">Cadastrar</button>
